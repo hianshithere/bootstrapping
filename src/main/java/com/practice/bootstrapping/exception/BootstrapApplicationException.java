@@ -3,6 +3,7 @@ package com.practice.bootstrapping.exception;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -16,7 +17,7 @@ public class BootstrapApplicationException extends ResponseEntityExceptionHandle
 
 	@ExceptionHandler(NoDataFoundInBootstrapResponse.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public BootstrapResponse handleNoDataFoundException(NoDataFoundInBootstrapResponse ex) {
+	public BootstrapResponse handleNoDataFoundException(@NotNull NoDataFoundInBootstrapResponse ex) {
 
 		Map<String, Object> body = new TreeMap<>();
 		body.put("localized-message", ex.getLocalizedMessage());

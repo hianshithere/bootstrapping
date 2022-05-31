@@ -73,5 +73,9 @@ public class UserService {
 
 		userRepository.deleteAll();
 	}
+	
+	public User findOne() {
+		return new User();
+	}
 
 }
