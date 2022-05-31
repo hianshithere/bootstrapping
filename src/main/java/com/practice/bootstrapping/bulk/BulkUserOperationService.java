@@ -1,16 +1,14 @@
 package com.practice.bootstrapping.bulk;
 
-import java.io.IOException;
-import java.lang.module.FindException;
-import java.util.List;
-
+import com.practice.bootstrapping.entity.User;
+import com.practice.bootstrapping.helper.ExcelHelper;
+import com.practice.bootstrapping.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.practice.bootstrapping.entity.User;
-import com.practice.bootstrapping.helper.ExcelHelper;
-import com.practice.bootstrapping.repositories.UserRepository;
+import java.io.IOException;
+import java.util.List;
 
 @Component
 @SuppressWarnings({ "unused", "rawtypes" })
@@ -26,7 +24,7 @@ public class BulkUserOperationService {
 			return userRepository.saveAll(excelToUsers);
 			
 		} catch (IOException e) {
-			throw new FindException("File is not readable!");
+			throw new RuntimeException("File is not readable!");
 		}
 	}
 

@@ -2,8 +2,10 @@ package com.practice.bootstrapping.controllers;
 
 import java.util.Optional;
 
+import com.practice.bootstrapping.aop.UserResponseReady;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +27,7 @@ public class UserController {
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
+	@UserResponseReady
 	public BootstrapResponse findAll() {
 		return new BootstrapResponse(userService.findAll(), "userService");
 	}
@@ -46,7 +49,7 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/test")
-	public User test() {
+	public Object test() {
 
 		User user = new User();
 		Vehicle vehicle = new Vehicle();
