@@ -13,7 +13,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @JsonPropertyOrder({ "timestamp", "metadata", "result" })
 public class BootstrapResponse {
 
@@ -33,7 +32,11 @@ public class BootstrapResponse {
 		this.result = result;
 		this.timestamp = timestampToString();
 	}
-	
+
+	public BootstrapResponse(){
+		this.timestamp = timestampToString ();
+	}
+
 	public String timestampToString() {
 		LocalDateTime date = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMMM-yyyy hh:mm:ss");
