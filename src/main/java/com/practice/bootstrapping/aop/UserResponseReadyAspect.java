@@ -4,7 +4,6 @@ import com.practice.bootstrapping.wrapper.BootstrapResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -29,13 +28,15 @@ public class UserResponseReadyAspect {
         Class bootstrappingResponse = BootstrapResponse.class;
 
         if (returnType.equals (bootstrappingResponse)) {
-            System.out.println (bootstrappingResponse.getName ());
+            log.info ("A Bootstrap Response");
             reponseOnMethodSignatureChange = returnValue;
         } else {
-            System.out.println ("!BootstrapResponse.class");
+            log.info ("Not a Bootstrap Response");
 
             BootstrapResponse response = new BootstrapResponse ();
             response.setResult (returnValue);
+
+            log.info (returnValue);
             response.setMetadata (methodSignature.getName ());
             reponseOnMethodSignatureChange = response;
             joinPoint.proceed ();

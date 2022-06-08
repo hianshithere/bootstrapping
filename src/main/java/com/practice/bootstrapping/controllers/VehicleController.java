@@ -47,7 +47,6 @@ public class VehicleController {
 
 	}
 
-
 	@GetMapping(path = "all")
 	public Object findAll() {
 		return vehicleRepository.findAll();

@@ -17,7 +17,6 @@ import lombok.Setter;
 public class BootstrapResponse {
 
 	private String timestamp;
-
 	private Object result;
 
 	private Object metadata;
