@@ -28,10 +28,10 @@ public class UserResponseReadyAspect {
         Class bootstrappingResponse = BootstrapResponse.class;
 
         if (returnType.equals (bootstrappingResponse)) {
-            log.info ("A Bootstrap Response");
+            log.error ("A Bootstrap Response");
             reponseOnMethodSignatureChange = returnValue;
         } else {
-            log.info ("Not a Bootstrap Response");
+            log.error ("Not a Bootstrap Response");
 
             BootstrapResponse response = new BootstrapResponse ();
             response.setResult (returnValue);
