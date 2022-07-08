@@ -12,6 +12,7 @@ import com.practice.bootstrapping.repositories.UserRepository;
 @Service
 public class UserService {
 
+
 	@Autowired
 	UserRepository userRepository;
 
@@ -72,6 +73,10 @@ public class UserService {
 	public void deleteAll() {
 
 		userRepository.deleteAll();
+	}
+	
+	public User findOne() {
+		return new User();
 	}
 
 }
