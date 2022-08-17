@@ -35,3 +35,4 @@ build/
 
 ### Mac code ###
 .DS_Store/
+.DS_Store
