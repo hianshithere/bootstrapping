@@ -37,15 +37,15 @@ class UserServiceTest {
 
 	@Test
 	void test_findAll() {
-		List<User> users = new ArrayList<User>();
-
-		users.add(new User("Amrita", "Shawarma", "Patni of Anshit Kumar Sharma"));
-		users.add(new User("Amri", "Shawarma", "Patni of Anshit Kumar Sharma"));
-		users.add(new User("Ammu", "Shawarma", "Patni of Anshit Kumar Sharma"));
-		users.add(new User("Ammuia", "Shawarma", "Patni of Anshit Kumar Sharma"));
-		users.add(new User("Babia", "Shawarma", "Patni of Anshit Kumar Sharma"));
-		users.add(new User("Gauri", "Shawarma", "Patni of Anshit Kumar Sharma"));
-
+		List<User> users = new ArrayList<User> ();
+		{
+			users.add (new User ("Amrita", "Shawarma", "Patni of Anshit Kumar Sharma"));
+			users.add (new User ("Amri", "Shawarma", "Patni of Anshit Kumar Sharma"));
+			users.add (new User ("Ammu", "Shawarma", "Patni of Anshit Kumar Sharma"));
+			users.add (new User ("Ammuia", "Shawarma", "Patni of Anshit Kumar Sharma"));
+			users.add (new User ("Babia", "Shawarma", "Patni of Anshit Kumar Sharma"));
+			users.add (new User ("Gauri", "Shawarma", "Patni of Anshit Kumar Sharma"));
+		}
 		when(userRepository.findAll()).thenReturn(users);
 
 		List<User> findAll = (List<User>) userRepository.findAll();
