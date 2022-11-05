@@ -21,7 +21,7 @@ public class UserResponseReadyAspect {
     public Object before(ProceedingJoinPoint joinPoint) throws Throwable {
 
         Object returnValue = joinPoint.proceed ();
-        Object reponseOnMethodSignatureChange = null;
+        Object responseOnMethodSignatureChange = null;
 
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature ();
         Class returnType = methodSignature.getReturnType ();
@@ -29,7 +29,7 @@ public class UserResponseReadyAspect {
 
         if (returnType.equals (bootstrappingResponse)) {
             log.error ("A Bootstrap Response");
-            reponseOnMethodSignatureChange = returnValue;
+            responseOnMethodSignatureChange = returnValue;
         } else {
             log.error ("Not a Bootstrap Response");
 
@@ -38,7 +38,7 @@ public class UserResponseReadyAspect {
 
             log.info (returnValue);
             response.setMetadata (methodSignature.getName ());
-            reponseOnMethodSignatureChange = response;
+            responseOnMethodSignatureChange = response;
             joinPoint.proceed ();
         }
         /*
@@ -50,7 +50,7 @@ public class UserResponseReadyAspect {
                 System.out.println ("***********************");
         */
 
-        return reponseOnMethodSignatureChange;
+        return responseOnMethodSignatureChange;
     }
 
     // After each method return
