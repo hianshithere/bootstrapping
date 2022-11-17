@@ -1,2 +1,5 @@
 security:
   property: This is property file
+  app-meta:
+    app-name: bootstrap-application
+    version: 1.1
