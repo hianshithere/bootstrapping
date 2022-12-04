@@ -1,23 +1,34 @@
 package com.practice.bootstrapping.aop;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.google.gson.Gson;
+import com.practice.bootstrapping.configurations.BootstrapApplicationConfiguration;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.Objects;
 
+@Slf4j
 public class BootstrapValidateImpl implements ConstraintValidator<BootstrapValidate, String> {
 
-    Log log = LogFactory.getLog (BootstrapValidateImpl.class);
+    @Autowired
+    private BootstrapApplicationConfiguration configuration;
+
+    final Gson gson = new Gson();
+
+    public BootstrapValidateImpl() {
+    }
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) {
-            log.info ("In validator implementations its Null");
+            log.info("In validator implementations its Null");
+            log.warn(gson.toJson(configuration));
             return false;
         }
-        log.info ("In validator implementations its NotNull");
+        log.info("In validator implementations its Not Null");
+        log.warn(gson.toJson(configuration));
+
         return true;
     }
 }
