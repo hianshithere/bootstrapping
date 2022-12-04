@@ -6,6 +6,7 @@ import com.practice.bootstrapping.entity.User;
 import com.practice.bootstrapping.entity.Vehicle;
 import com.practice.bootstrapping.services.UserService;
 import com.practice.bootstrapping.wrapper.BootstrapResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +20,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/user")
+@Slf4j
 public class UserController {
-
-    Log log = LogFactory.getLog (UserController.class);
     @Autowired
     private UserService userService;
-
-
-//	@GetMapping
-//	@ResponseStatus(HttpStatus.OK)
-//	public List<User> findAll() {
-//		return userService.findAll();
-//	}
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

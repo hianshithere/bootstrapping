@@ -12,7 +12,6 @@ import com.practice.bootstrapping.repositories.UserRepository;
 @Service
 public class UserService {
 
-
 	@Autowired
 	UserRepository userRepository;
 
