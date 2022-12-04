@@ -17,9 +17,8 @@ public class VehicleService {
 	private VehicleRepository vehicleRepository;
 
 	public TreeMap<Integer, String> mapOfVehicleIdAndIdentity() {
-		TreeMap<Integer, String> mapOfVehicleIdAndIdentity = vehicleRepository.findAll().stream().collect(Collectors
+		return vehicleRepository.findAll().stream().collect(Collectors
 				.toMap(Vehicle::getId, Vehicle::getVehicleName, (oldVehicle, newVehicle) -> oldVehicle, TreeMap::new));
-		return mapOfVehicleIdAndIdentity;
 	}
 
 	public Vehicle save(Vehicle entity) {

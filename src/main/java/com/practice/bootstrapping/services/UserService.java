@@ -17,7 +17,7 @@ public class UserService {
 	UserRepository userRepository;
 
 	public List<User> findAll() {
-		return (List<User>) userRepository.findAll();
+		return userRepository.findAll();
 	}
 
 	public User save(User user) {
@@ -27,7 +27,7 @@ public class UserService {
 
 	public List<User> saveAll(List<User> entities) {
 
-		return (List<User>) userRepository.saveAll(entities);
+		return userRepository.saveAll(entities);
 	}
 
 	public Optional<User> findById(Integer id) {
@@ -42,7 +42,7 @@ public class UserService {
 
 	public List<User> findAllById(List<Integer> ids) {
 
-		return (List<User>) userRepository.findAllById(ids);
+		return userRepository.findAllById(ids);
 	}
 
 	public long count() {

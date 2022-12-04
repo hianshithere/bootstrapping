@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.fasterxml.jackson.databind.type.TypeFactory.*;
+
 @Configuration
 @Slf4j
 public class DataSetupRunner implements CommandLineRunner {
@@ -48,7 +50,7 @@ public class DataSetupRunner implements CommandLineRunner {
 
     private void dataloader(String readString) {
 
-        CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType
+        CollectionType typeReference = defaultInstance().constructCollectionType
                 (List.class, BulkModel.class);
 
         ObjectMapper mapper = new ObjectMapper();
