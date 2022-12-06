@@ -34,11 +34,13 @@ import com.practice.bootstrapping.wrapper.BootstrapResponse;
 @RequestMapping(path = "/vehicle")
 public class VehicleController {
 
-	@Autowired
-	private VehicleService vehicleService;
-	
-	@Autowired
-	private VehicleRepository vehicleRepository;
+	private final VehicleService vehicleService;
+	private final VehicleRepository vehicleRepository;
+
+	public VehicleController(VehicleService vehicleService, VehicleRepository vehicleRepository) {
+		this.vehicleService = vehicleService;
+		this.vehicleRepository = vehicleRepository;
+	}
 
 	@GetMapping
 	public BootstrapResponse getVehicles() {
@@ -54,35 +56,41 @@ public class VehicleController {
 
 	@RequestMapping(path = "options", method = RequestMethod.OPTIONS)
 	public Map<Integer, String> findAllOptions() {
-		return vehicleRepository.findAll().stream().collect(Collectors.toMap(Vehicle::getId, Vehicle::getVehicleName));
+		return vehicleRepository.findAll()
+				.stream()
+				.collect(Collectors
+						.toMap(Vehicle::getId, Vehicle::getVehicleName));
 	}
 
 	@DeleteMapping()
 	public ResponseEntity<BootstrapResponse> deleteAll() {
 		vehicleRepository.deleteAll();
-		return new ResponseEntity<BootstrapResponse>(new BootstrapResponse("completed", "deleted all data"),
+		return new ResponseEntity<BootstrapResponse>(
+				new BootstrapResponse("completed", "deleted all data"),
 				HttpStatus.OK);
 	}
 
 	@GetMapping(path = "count")
 	public ResponseEntity<BootstrapResponse> count() {
-		return new ResponseEntity<BootstrapResponse>(new BootstrapResponse(HttpStatus.OK, vehicleRepository.count()),
+		return new ResponseEntity<BootstrapResponse>(
+				new BootstrapResponse(HttpStatus.OK, vehicleRepository.count()),
 				HttpStatus.OK);
 	}
 
 	@PostMapping(path = "findById")
 	public ResponseEntity<BootstrapResponse> findById(@RequestParam(name = "id") Integer Id) {
 		return new ResponseEntity<BootstrapResponse>(
-				new BootstrapResponse(HttpStatus.OK, vehicleRepository.findById(Id)), HttpStatus.OK);
+				new BootstrapResponse(HttpStatus.OK, vehicleRepository.findById(Id)),
+				HttpStatus.OK);
 	}
 
 	@PostMapping(path = "findByIds", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<BootstrapResponse> findByIds(@RequestBody List<Integer> Ids) {
 		return new ResponseEntity<BootstrapResponse>(
-				new BootstrapResponse(HttpStatus.OK, vehicleRepository.findAllById(Ids)), HttpStatus.OK);
+				new BootstrapResponse(HttpStatus.OK, vehicleRepository.findAllById(Ids)),
+				HttpStatus.OK);
 	}
 
-	@SuppressWarnings("unchecked")
 	@PostMapping(path = "process")
 	public Object extractFromResult(@RequestBody String request) {
 		BootstrapResponse readValue = null;
@@ -92,17 +100,16 @@ public class VehicleController {
 			e.printStackTrace();
 		}
 		List<Vehicle> vechileList = (List<Vehicle>) readValue.getResult();
-
 		return vechileList;
 	}
 
 	@PostMapping(path = "comparing")
-	public Object comparingTwoJSON(@RequestBody BootstrapResponse booResponse)
+	public Object comparingTwoJSON(@RequestBody BootstrapResponse bootstrapResponse)
 			throws Exception, JsonProcessingException {
 
 		ObjectMapper mapper = new ObjectMapper();
-		String jsonString1 = (String) booResponse.getMetadata();
-		String jsonString2 = (String) booResponse.getResult();
+		String jsonString1 = (String) bootstrapResponse.getMetadata();
+		String jsonString2 = (String) bootstrapResponse.getResult();
 
 		JsonNode json1 = mapper.readTree(jsonString1);
 		JsonNode json2 = mapper.readTree(jsonString2);
@@ -114,24 +121,16 @@ public class VehicleController {
 		map.put("jsonString1", json1);
 		map.put("jsonString2", json2);
 		map.put("areTheyEqual", areTheyEqual);
-		List<Object> returnMapAsList = new ArrayList<Object>() {
-			/**
-			* 
-			*/
-			private static final long serialVersionUID = 8621127879813323214L;
-
-			{
+		List<Object> returnMapAsList = new ArrayList<Object>() {{
 				add(map);
-			}
-		};
+		}};
 
 		return new BootstrapResponse(returnMapAsList, HttpStatus.ACCEPTED);
-
 	}
 
 	@GetMapping("exception")
 	public BootstrapResponse throwSomeException() {
-		throw new NoDataFoundInBootstrapResponse("Jaan boochke feka exception");
+		throw new NoDataFoundInBootstrapResponse("Jaan boochke feka hua exception");
 	}
 
 	@GetMapping("test")

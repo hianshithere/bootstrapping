@@ -1,7 +1,7 @@
 package com.practice.bootstrapping.repositories;
 
-public interface UserRepositoryOverrides {
+import com.practice.bootstrapping.entity.User;
 
-    Iterable findAll();
-
+interface UserRepositoryOverrides {
+    Iterable<User> findAll();
 }

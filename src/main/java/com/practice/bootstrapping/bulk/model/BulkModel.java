@@ -6,11 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BulkModel {
-	
 	private Integer makeId;
-	
 	private String makeName;
-	
-	
-
 }

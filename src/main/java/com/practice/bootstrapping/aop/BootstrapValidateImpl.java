@@ -1,7 +1,7 @@
 package com.practice.bootstrapping.aop;
 
 import com.google.gson.Gson;
-import com.practice.bootstrapping.configurations.BootstrapApplicationConfiguration;
+import com.practice.bootstrapping.configurations.properties.BootstrapApplicationConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,4 +1,4 @@
-package com.practice.bootstrapping.configurations;
+package com.practice.bootstrapping.configurations.redis;
 
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;

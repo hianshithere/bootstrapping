@@ -1,4 +1,4 @@
-package com.practice.bootstrapping.configurations;
+package com.practice.bootstrapping.configurations.properties;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

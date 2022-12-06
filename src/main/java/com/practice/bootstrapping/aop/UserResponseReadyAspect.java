@@ -1,6 +1,7 @@
 package com.practice.bootstrapping.aop;
 
 import com.practice.bootstrapping.wrapper.BootstrapResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -11,9 +12,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
+@Slf4j
 public class UserResponseReadyAspect {
 
-    Log log = LogFactory.getLog (UserResponseReadyAspect.class);
 
     // annotations definition for Around
     @Around (value = "@within(com.practice.bootstrapping.aop.UserResponseReady) || "
@@ -28,15 +29,16 @@ public class UserResponseReadyAspect {
         Class bootstrappingResponse = BootstrapResponse.class;
 
         if (returnType.equals (bootstrappingResponse)) {
-            log.error ("A Bootstrap Response");
+            log.warn ("A Bootstrap Response");
             responseOnMethodSignatureChange = returnValue;
         } else {
-            log.error ("Not a Bootstrap Response");
+            log.warn ("Not a Bootstrap Response");
 
             BootstrapResponse response = new BootstrapResponse ();
             response.setResult (returnValue);
 
-            log.info (returnValue);
+            log.info (String.valueOf(returnValue));
+
             response.setMetadata (methodSignature.getName ());
             responseOnMethodSignatureChange = response;
             joinPoint.proceed ();
@@ -54,6 +56,7 @@ public class UserResponseReadyAspect {
     }
 
     // After each method return
+
 //    @Around("execution(* com.practice.bootstrapping.controllers.UserController.*(..))")
 //    public Object afterReturning(ProceedingJoinPoint joinPoint) throws Throwable {
 //

@@ -12,70 +12,62 @@ import com.practice.bootstrapping.repositories.UserRepository;
 @Service
 public class UserService {
 
-	@Autowired
-	UserRepository userRepository;
+    private final UserRepository userRepository;
 
-	public List<User> findAll() {
-		return userRepository.findAll();
-	}
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-	public User save(User user) {
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 
-		return userRepository.save(user);
-	}
+    public User save(User user) {
+        return userRepository.save(user);
+    }
 
-	public List<User> saveAll(List<User> entities) {
+    public List<User> saveAll(List<User> entities) {
+        return userRepository.saveAll(entities);
+    }
 
-		return userRepository.saveAll(entities);
-	}
+    public Optional<User> findById(Integer id) {
+        return userRepository.findById(id);
+    }
 
-	public Optional<User> findById(Integer id) {
+    public boolean existsById(Integer id) {
+        return userRepository.existsById(id);
+    }
 
-		return userRepository.findById(id);
-	}
+    public List<User> findAllById(List<Integer> ids) {
+        return userRepository.findAllById(ids);
+    }
 
-	public boolean existsById(Integer id) {
+    public long count() {
+        return userRepository.count();
+    }
 
-		return userRepository.existsById(id);
-	}
+    public void deleteById(Integer id) {
+        userRepository.deleteById(id);
+    }
 
-	public List<User> findAllById(List<Integer> ids) {
+    public void delete(User entity) {
+        userRepository.delete(entity);
+    }
 
-		return userRepository.findAllById(ids);
-	}
+    public void deleteAllById(List<Integer> ids) {
+        userRepository.deleteAllById(ids);
+    }
 
-	public long count() {
+    public void deleteAll(List<User> entities) {
+        userRepository.deleteAll(entities);
+    }
 
-		return userRepository.count();
-	}
+    public void deleteAll() {
+        userRepository.deleteAll();
+    }
 
-	public void deleteById(Integer id) {
-
-		userRepository.deleteById(id);
-	}
-
-	public void delete(User entity) {
-
-		userRepository.delete(entity);
-	}
-
-	public void deleteAllById(List<Integer> ids) {
-
-		userRepository.deleteAllById(ids);
-	}
-
-	public void deleteAll(List<User> entities) {
-
-		userRepository.deleteAll(entities);
-	}
-
-	public void deleteAll() {
-
-		userRepository.deleteAll();
-	}
-	
-	public User findOne() {
-		return new User();
-	}
+    public User findOne() {
+        return new User();
+    }
 
 }

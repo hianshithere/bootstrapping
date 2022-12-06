@@ -1,7 +1,6 @@
-package com.practice.bootstrapping.configurations;
+package com.practice.bootstrapping.configurations.redis;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -14,7 +13,6 @@ import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class BootstrapRedisConfig {
 
     @Bean
@@ -24,6 +22,19 @@ public class BootstrapRedisConfig {
         jedisConFactory.setHostName("localhost");
         jedisConFactory.setPort(6379);
         return jedisConFactory;
+    }
+
+    /**
+     * One more way to activate connection factory for redis
+     **/
+    // @Bean
+    JedisConnectionFactory connectionFactory() {
+        RedisProperties properties = new RedisProperties();
+        RedisStandaloneConfiguration redisStandaloneConfiguration
+                = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(properties.getHost());
+        redisStandaloneConfiguration.setPort(properties.getPort());
+        return new JedisConnectionFactory(redisStandaloneConfiguration);
     }
 
     @Bean
@@ -38,12 +49,13 @@ public class BootstrapRedisConfig {
 
     @Bean
     MessageListenerAdapter messageListenerAdapter() {
-        return new MessageListenerAdapter(new RedisMessageSubscriber(), "onMessage");
+        return new MessageListenerAdapter(new RedisMessageSubscriber(),
+                "onMessage");
     }
 
     @Bean
     public ChannelTopic topic() {
-        return new ChannelTopic("stackfortech");
+        return new ChannelTopic("bootstrap");
     }
 
     @Bean

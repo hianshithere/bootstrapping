@@ -1,55 +1,60 @@
 package com.practice.bootstrapping.services;
 
+import com.practice.bootstrapping.entity.Vehicle;
+import com.practice.bootstrapping.repositories.VehicleRepository;
+import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.practice.bootstrapping.entity.Vehicle;
-import com.practice.bootstrapping.repositories.VehicleRepository;
-
 @Service
 public class VehicleService {
 
-	@Autowired
-	private VehicleRepository vehicleRepository;
+    private final VehicleRepository vehicleRepository;
 
-	public TreeMap<Integer, String> mapOfVehicleIdAndIdentity() {
-		return vehicleRepository.findAll().stream().collect(Collectors
-				.toMap(Vehicle::getId, Vehicle::getVehicleName, (oldVehicle, newVehicle) -> oldVehicle, TreeMap::new));
-	}
+    public VehicleService(VehicleRepository vehicleRepository) {
+        this.vehicleRepository = vehicleRepository;
+    }
 
-	public Vehicle save(Vehicle entity) {
-		return vehicleRepository.save(entity);
-	}
+    public TreeMap<Integer, String> mapOfVehicleIdAndIdentity() {
+        return vehicleRepository.findAll()
+                .stream()
+                .collect(Collectors
+                        .toMap(Vehicle::getId, Vehicle::getVehicleName,
+                                (oldVehicle, newVehicle) -> oldVehicle,
+                                TreeMap::new));
+    }
 
-	public Optional<Vehicle> findById(Integer id) {
-		return vehicleRepository.findById(id);
-	}
+    public Vehicle save(Vehicle entity) {
+        return vehicleRepository.save(entity);
+    }
 
-	public boolean existsById(Integer id) {
-		return vehicleRepository.existsById(id);
-	}
+    public Optional<Vehicle> findById(Integer id) {
+        return vehicleRepository.findById(id);
+    }
 
-	public long count() {
-		return vehicleRepository.count();
-	}
+    public boolean existsById(Integer id) {
+        return vehicleRepository.existsById(id);
+    }
 
-	public void deleteById(Integer id) {
-		vehicleRepository.deleteById(id);
-	}
+    public long count() {
+        return vehicleRepository.count();
+    }
 
-	public void delete(Vehicle entity) {
-		vehicleRepository.delete(entity);
-	}
+    public void deleteById(Integer id) {
+        vehicleRepository.deleteById(id);
+    }
 
-	public void deleteAllById(Iterable<Integer> ids) {
-		vehicleRepository.deleteAllById(ids);
-	}
+    public void delete(Vehicle entity) {
+        vehicleRepository.delete(entity);
+    }
 
-	public Iterable<Vehicle> findAll() {
-		return vehicleRepository.findAll();
-	}
+    public void deleteAllById(Iterable<Integer> ids) {
+        vehicleRepository.deleteAllById(ids);
+    }
+
+    public Iterable<Vehicle> findAll() {
+        return vehicleRepository.findAll();
+    }
 }

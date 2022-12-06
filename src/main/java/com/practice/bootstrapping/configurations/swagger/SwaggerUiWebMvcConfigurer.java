@@ -1,4 +1,4 @@
-package com.practice.bootstrapping.configurations;
+package com.practice.bootstrapping.configurations.swagger;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

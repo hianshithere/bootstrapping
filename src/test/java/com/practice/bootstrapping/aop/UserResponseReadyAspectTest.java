@@ -14,16 +14,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @Slf4j
 class UserResponseReadyAspectTest {
-
     @Mock
     ProceedingJoinPoint proceedingJoinPoint;
-
     @Mock
     MethodSignature methodSignature;
 
@@ -40,20 +38,17 @@ class UserResponseReadyAspectTest {
 
     @Test
     @DisplayName("UserResponseReadyAspect happy path")
-    void before() throws Throwable {
+    void userResponseAspect_andSuccess_test() throws Throwable {
         UserResponseReadyAspect userResponseReadyAspect = new UserResponseReadyAspect();
         Object before = userResponseReadyAspect.before(proceedingJoinPoint);
         Class bootstrappingResponse = BootstrapResponse.class;
         assertFalse(before.equals(bootstrappingResponse));
 
         BootstrapResponse response = (BootstrapResponse) before;
-
-
         String abc = response.getResult().toString();
-
         List<String> list = Arrays.asList(abc.substring(1, abc.length() - 1).split(", "));
-        System.out.println(list);
-
-
+        assertEquals(Arrays.asList("anshit", "kumar", "sharma"), list);
+        assertEquals(Arrays.asList("anshit", "kumar", "sharma"),proceedingJoinPoint.proceed());
+        assertEquals(proceedingJoinPoint.proceed(), list);
     }
 }
