@@ -1,5 +1,6 @@
 package com.practice.bootstrapping;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -7,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class BootstrappingApplicationTests {
 
 	@Test
+	@Disabled("TODO: blank test")
 	void contextLoads() {
 	}
 	
