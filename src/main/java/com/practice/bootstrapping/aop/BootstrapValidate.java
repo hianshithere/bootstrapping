@@ -14,9 +14,7 @@ import static java.lang.annotation.ElementType.*;
 public @interface BootstrapValidate {
 
     String message() default "The value provided is null";
-
     Class<?>[] groups() default { };
-
     Class<? extends Payload>[] payload() default { };
 
 }

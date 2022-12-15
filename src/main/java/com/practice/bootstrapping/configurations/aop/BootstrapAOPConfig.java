@@ -1,4 +1,4 @@
-package com.practice.bootstrapping.aop;
+package com.practice.bootstrapping.configurations.aop;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;

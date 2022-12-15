@@ -1,25 +1,26 @@
 package com.practice.bootstrapping.bulk;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
-
 import com.practice.bootstrapping.bulk.model.BulkModel;
 import com.practice.bootstrapping.entity.Vehicle;
 import com.practice.bootstrapping.repositories.VehicleRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
-@Component
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@Slf4j
 public class BulkVehicleOperationServices {
 	
-	@Autowired
-	VehicleRepository vehicleRepository;
+	private final VehicleRepository vehicleRepository;
+	public BulkVehicleOperationServices(VehicleRepository vehicleRepository) {
+		this.vehicleRepository = vehicleRepository;
+	}
 
 	@Async
 	public void bulkUpdateDataInVehicleTable(List<BulkModel> bulkModelList) {
-
 		String description = "model make ";
 		List<Vehicle> vehicles = bulkModelList.stream()
 				.filter(vehicle -> !vehicle.getMakeName().isBlank() || !vehicle.getMakeName().isEmpty())
@@ -32,8 +33,8 @@ public class BulkVehicleOperationServices {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("************************************");
-		System.out.println("***** VEHICLE UPDATE COMPLETED *****");
-		System.out.println("************************************");
+		log.info("************************************");
+		log.info("***** VEHICLE UPDATE COMPLETED *****");
+		log.info("************************************");
 	}
 }

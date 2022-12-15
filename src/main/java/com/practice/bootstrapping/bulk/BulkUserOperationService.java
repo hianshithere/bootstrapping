@@ -3,7 +3,6 @@ package com.practice.bootstrapping.bulk;
 import com.practice.bootstrapping.entity.User;
 import com.practice.bootstrapping.helper.ExcelHelper;
 import com.practice.bootstrapping.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,8 +13,10 @@ import java.util.List;
 @SuppressWarnings({ "unused", "rawtypes" })
 public class BulkUserOperationService {
 
-	@Autowired
-	private UserRepository userRepository;
+	private  final UserRepository userRepository;
+	public BulkUserOperationService(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	public Iterable bulkUserProcessing(MultipartFile file) {
 		try {

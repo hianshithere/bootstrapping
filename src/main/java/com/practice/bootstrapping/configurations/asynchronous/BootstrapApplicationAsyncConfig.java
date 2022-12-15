@@ -1,4 +1,4 @@
-package com.practice.bootstrapping.asynchronous;
+package com.practice.bootstrapping.configurations.asynchronous;
 
 import java.util.concurrent.Executor;
 

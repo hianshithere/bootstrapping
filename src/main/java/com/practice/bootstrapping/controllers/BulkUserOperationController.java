@@ -1,5 +1,6 @@
-package com.practice.bootstrapping.bulk;
+package com.practice.bootstrapping.controllers;
 
+import com.practice.bootstrapping.bulk.BulkUserOperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +15,11 @@ import com.practice.bootstrapping.wrapper.BootstrapResponse;
 @RequestMapping(path = "/user-bulk")
 public class BulkUserOperationController {
 
-	@Autowired
-	private BulkUserOperationService service;
+	private final BulkUserOperationService service;
+
+	public BulkUserOperationController(BulkUserOperationService service) {
+		this.service = service;
+	}
 
 	@PostMapping
 	public BootstrapResponse bulkInsert(@RequestParam("file") MultipartFile file) {

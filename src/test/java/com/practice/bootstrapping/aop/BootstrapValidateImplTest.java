@@ -1,8 +1,8 @@
 package com.practice.bootstrapping.aop;
 
 import com.google.gson.Gson;
-import com.practice.bootstrapping.configurations.ApplicationMetadata;
-import com.practice.bootstrapping.configurations.BootstrapApplicationConfiguration;
+import com.practice.bootstrapping.configurations.properties.ApplicationMetadata;
+import com.practice.bootstrapping.configurations.properties.BootstrapApplicationConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.validation.ConstraintValidatorContext;
 
@@ -27,13 +26,10 @@ class BootstrapValidateImplTest {
 
     @Mock
     ConstraintValidatorContext validatorContext;
-
     @Mock
     Gson gson;
-
     @Mock
     BootstrapApplicationConfiguration configuration;
-
     @InjectMocks
     BootstrapValidateImpl bootstrapValidate;
 
@@ -41,24 +37,25 @@ class BootstrapValidateImplTest {
     @BeforeEach
     void setup() {
         initMocks(this);
-        lenient().when(gson.toJson(any())).thenReturn(" it is mocked ");
-        BootstrapApplicationConfiguration applicationConfiguration =
-                new BootstrapApplicationConfiguration();
+        lenient().when(gson.toJson(any())).thenReturn("it is mocked");
+        BootstrapApplicationConfiguration applicationConfiguration = new BootstrapApplicationConfiguration();
         applicationConfiguration.setProperty("JSR");
-        applicationConfiguration.setAppMetadata(ApplicationMetadata.builder().appName("bootstrap").version("1.1").build());
+        applicationConfiguration.setAppMetadata(
+                ApplicationMetadata
+                        .builder()
+                        .appName("bootstrap")
+                        .version("1.1")
+                        .build());
 
         lenient().when(configuration.getProperty()).thenReturn("JSR");
-
     }
 
     @Test
-    @DisplayName("Constraint is non empty")
     void isValid() {
         assertTrue(bootstrapValidate.isValid("some text", validatorContext));
     }
 
     @Test
-    @DisplayName("Constraint is empty")
     void isInvalid() {
         assertFalse(bootstrapValidate.isValid(null, validatorContext));
     }

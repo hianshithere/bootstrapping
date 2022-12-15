@@ -1,10 +1,9 @@
 package com.practice.bootstrapping.controllers;
 
-import com.practice.bootstrapping.configurations.RedisMessagePublisher;
-import com.practice.bootstrapping.configurations.RedisMessageSubscriber;
+import com.practice.bootstrapping.configurations.redis.RedisMessagePublisher;
+import com.practice.bootstrapping.configurations.redis.RedisMessageSubscriber;
 import com.practice.bootstrapping.dto.Message;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,9 +13,11 @@ import java.util.List;
 @RequestMapping("/api/redis")
 public class RedisController {
 
-    @Autowired
-    private RedisMessagePublisher messagePublisher;
+    private final RedisMessagePublisher messagePublisher;
 
+    public RedisController(RedisMessagePublisher messagePublisher) {
+        this.messagePublisher = messagePublisher;
+    }
 
     @PostMapping("/publish")
     public void setMessage(@RequestBody Message message) {

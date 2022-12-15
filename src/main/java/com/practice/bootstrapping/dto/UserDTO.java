@@ -5,10 +5,7 @@ import lombok.Data;
 
 @Data
 public class UserDTO {
-
     public String valid_username;
-
     @BootstrapValidate
     public String valid_userId;
-
 }

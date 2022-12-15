@@ -7,31 +7,31 @@ import com.practice.bootstrapping.entity.Vehicle;
 import com.practice.bootstrapping.services.UserService;
 import com.practice.bootstrapping.wrapper.BootstrapResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Optional;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping(path = "/user")
 @Slf4j
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @GetMapping
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public BootstrapResponse findAll() {
         return new BootstrapResponse (userService.findAll (), "userService");
     }
 
-    @PostMapping
+    @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public User findById(@RequestBody User user) {
         Optional<User> findById = userService.findById (user.getId ());
         if (findById.isPresent ())
@@ -40,10 +40,9 @@ public class UserController {
         return new User (null, null, "NOT FOUND");
     }
 
-    @GetMapping(path = "/test")
+    @GetMapping(path = "/test", produces = APPLICATION_JSON_VALUE)
     @UserResponseReady
     public Object test() {
-
         User user = new User ();
         Vehicle vehicle = new Vehicle ();
         vehicle.setId (1);
@@ -57,7 +56,7 @@ public class UserController {
         return new UserDTO ();
     }
 
-    @PostMapping(value = "/dto", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/dto", consumes = APPLICATION_JSON_VALUE)
     @UserResponseReady
     public Object dto(@Valid @RequestBody UserDTO userDTO) {
         return userDTO;
