@@ -2,8 +2,6 @@ package com.practice.bootstrapping.aop;
 
 import com.practice.bootstrapping.wrapper.BootstrapResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,33 +13,31 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class UserResponseReadyAspect {
 
-
-    // annotations definition for Around
-    @Around (value = "@within(com.practice.bootstrapping.aop.UserResponseReady) || "
+    @Around(value = "@within(com.practice.bootstrapping.aop.UserResponseReady) || "
             + "@annotation(com.practice.bootstrapping.aop.UserResponseReady)")
     public Object before(ProceedingJoinPoint joinPoint) throws Throwable {
 
-        Object returnValue = joinPoint.proceed ();
+        Object returnValue = joinPoint.proceed();
         Object responseOnMethodSignatureChange = null;
 
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature ();
-        Class returnType = methodSignature.getReturnType ();
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        Class returnType = methodSignature.getReturnType();
         Class bootstrappingResponse = BootstrapResponse.class;
 
-        if (returnType.equals (bootstrappingResponse)) {
-            log.warn ("A Bootstrap Response");
+        if (returnType.equals(bootstrappingResponse)) {
+            log.warn("A Bootstrap Response");
             responseOnMethodSignatureChange = returnValue;
         } else {
-            log.warn ("Not a Bootstrap Response");
+            log.warn("Not a Bootstrap Response");
 
-            BootstrapResponse response = new BootstrapResponse ();
-            response.setResult (returnValue);
+            BootstrapResponse response = new BootstrapResponse();
+            response.setResult(returnValue);
 
-            log.info (String.valueOf(returnValue));
+            log.info(String.valueOf(returnValue));
 
-            response.setMetadata (methodSignature.getName ());
+            response.setMetadata(methodSignature.getName());
             responseOnMethodSignatureChange = response;
-            joinPoint.proceed ();
+            joinPoint.proceed();
         }
         /*
                 if (joinPoint.getSignature () instanceof BootstrapResponse) {

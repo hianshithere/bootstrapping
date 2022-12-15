@@ -3,7 +3,6 @@ package com.practice.bootstrapping.aop;
 import com.google.gson.Gson;
 import com.practice.bootstrapping.configurations.properties.BootstrapApplicationConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -11,12 +10,12 @@ import javax.validation.ConstraintValidatorContext;
 @Slf4j
 public class BootstrapValidateImpl implements ConstraintValidator<BootstrapValidate, String> {
 
-    @Autowired
-    private BootstrapApplicationConfiguration configuration;
+    private final BootstrapApplicationConfiguration configuration;
 
     final Gson gson = new Gson();
 
-    public BootstrapValidateImpl() {
+    public BootstrapValidateImpl(BootstrapApplicationConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
