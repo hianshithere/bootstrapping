@@ -11,7 +11,7 @@ import static java.lang.annotation.ElementType.*;
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE, LOCAL_VARIABLE })
 @Retention(value = RetentionPolicy.RUNTIME)
 @Constraint (validatedBy = BootstrapValidateImpl.class)
-public @interface BootstrapValidate {
+@interface BootstrapValidate {
 
     String message() default "The value provided is null";
     Class<?>[] groups() default { };

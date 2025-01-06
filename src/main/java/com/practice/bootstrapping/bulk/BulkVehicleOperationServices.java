@@ -8,33 +8,31 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class BulkVehicleOperationServices {
-	
-	private final VehicleRepository vehicleRepository;
-	public BulkVehicleOperationServices(VehicleRepository vehicleRepository) {
-		this.vehicleRepository = vehicleRepository;
-	}
 
-	@Async
-	public void bulkUpdateDataInVehicleTable(List<BulkModel> bulkModelList) {
-		String description = "model make ";
-		List<Vehicle> vehicles = bulkModelList.stream()
-				.filter(vehicle -> !vehicle.getMakeName().isBlank() || !vehicle.getMakeName().isEmpty())
-				.map(bulkModel -> new Vehicle(bulkModel.getMakeName(), description + bulkModel.getMakeName()))
-				.collect(Collectors.toList());
+  private final VehicleRepository vehicleRepository;
 
-		vehicleRepository.saveAll(vehicles);
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		log.info("************************************");
-		log.info("***** VEHICLE UPDATE COMPLETED *****");
-		log.info("************************************");
-	}
+  public BulkVehicleOperationServices(VehicleRepository vehicleRepository) {
+    this.vehicleRepository = vehicleRepository;
+  }
+
+  @Async
+  public void bulkUpdateDataInVehicleTable(List<BulkModel> bulkModelList) {
+    String description = "model make ";
+    List<Vehicle> vehicles =
+        bulkModelList.stream()
+            .filter(vehicle -> Objects.nonNull(vehicle.getMakeName()))
+            .map(
+                bulkModel ->
+                    new Vehicle(bulkModel.getMakeName(), description + bulkModel.getMakeName()))
+            .collect(Collectors.toList());
+
+    vehicleRepository.saveAll(vehicles);
+	log.info("bulk update for vehicle data is completed");
+  }
 }

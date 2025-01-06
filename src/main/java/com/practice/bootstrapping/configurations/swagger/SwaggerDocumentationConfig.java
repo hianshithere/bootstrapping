@@ -16,40 +16,39 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerDocumentationConfig {
 
-    private final boolean enableSwaggerPlugin;
+  private final boolean enableSwaggerPlugin;
 
-    public SwaggerDocumentationConfig(
-            @Value("${enable.swagger.plugin:true}") boolean enableSwaggerPlugin) {
-        this.enableSwaggerPlugin = enableSwaggerPlugin;
-    }
+  public SwaggerDocumentationConfig(
+      @Value("${enable.swagger.plugin:true}") boolean enableSwaggerPlugin) {
+    this.enableSwaggerPlugin = enableSwaggerPlugin;
+  }
 
-    ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("Bootstrap Application")
-                .description("" +
-                        "This application was founded to bring all basic knowledge under one roof." +
-                        "The application is simple mapping of users and vehicles, but this also has information's about bulk uploads," +
-                        "complete excel processing, test cases and mocking, aop, async, exception handling, data set with command line runner" +
-                        ", basically all basic knowledge about the development" +
-                        "")
-                .license("MIT")
-                .licenseUrl("https://opensource.org/licenses/MIT")
-                .version("4.6.95")
-                .contact(new Contact("Anshit",
-                        "https://github.com/hianshithere", ""))
-                .build();
-    }
+  ApiInfo apiInfo() {
+    return new ApiInfoBuilder()
+        .title("Bootstrap Application")
+        .description(
+            ""
+                + "This application was founded to bring all basic knowledge under one roof."
+                + "The application is simple mapping of users and vehicles, but this also has information's about bulk uploads,"
+                + "complete excel processing, test cases and mocking, aop, async, exception handling, data set with command line runner"
+                + ", basically all basic knowledge about the development"
+                + "")
+        .license("MIT")
+        .licenseUrl("https://opensource.org/licenses/MIT")
+        .version("4.6.95")
+        .contact(new Contact("Anshit", "https://github.com/hianshithere", ""))
+        .build();
+  }
 
-    @Bean
-    public Docket customImplementation() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .useDefaultResponseMessages(false)
-                .select()
-                .apis(RequestHandlerSelectors
-                        .basePackage("com.practice.bootstrapping.controllers"))
-                .paths(PathSelectors.any())
-                .build()
-                .enable(enableSwaggerPlugin)
-                .apiInfo(apiInfo());
-    }
+  @Bean
+  public Docket customImplementation() {
+    return new Docket(DocumentationType.SWAGGER_2)
+        .useDefaultResponseMessages(false)
+        .select()
+        .apis(RequestHandlerSelectors.basePackage("com.practice.bootstrapping.controllers"))
+        .paths(PathSelectors.any())
+        .build()
+        .enable(enableSwaggerPlugin)
+        .apiInfo(apiInfo());
+  }
 }

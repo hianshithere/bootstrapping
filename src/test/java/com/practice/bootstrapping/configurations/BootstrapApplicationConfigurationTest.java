@@ -1,7 +1,6 @@
 package com.practice.bootstrapping.configurations;
 
 import com.practice.bootstrapping.configurations.properties.BootstrapApplicationConfiguration;
-import com.sun.xml.bind.v2.TODO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ class BootstrapApplicationConfigurationTest {
 
     @Test
     void getProperty() {
-        // TODO: Find a way to test properties files
         log.info(configuration.getProperty());
     }
 }

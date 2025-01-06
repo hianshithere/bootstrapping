@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 public class UserRepositoryOverridesImpl implements UserRepositoryOverrides {
     public Iterable<User> findAll() {
-        log.info("finalAll from abstract");
+        log.info("findAll from abstract");
         return null;
     }
 }

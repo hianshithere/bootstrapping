@@ -11,7 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -27,33 +28,34 @@ public class UserController {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public BootstrapResponse findAll() {
-        return new BootstrapResponse (userService.findAll (), "userService");
+    public BootstrapResponse findAllUsers() {
+        return new BootstrapResponse(userService.retrieveAllUsers(), "userService");
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public User findById(@RequestBody User user) {
-        Optional<User> findById = userService.findById (user.getId ());
-        if (findById.isPresent ())
-            return findById.get ();
+    public UserDTO retrieveUserByUserId(@RequestBody @NotNull int id) {
+        return userService.retrieveValidUserBy(id);
+    }
 
-        return new User (null, null, "NOT FOUND");
+    @PostMapping(value = "/vehicles",produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public Collection<Vehicle> findAllVehiclesOfUserWith(@RequestBody @NotNull int id) {
+        return userService.retrieveValidUserBy(id).getUserVehicles();
     }
 
     @GetMapping(path = "/test", produces = APPLICATION_JSON_VALUE)
     @UserResponseReady
     public Object test() {
-        User user = new User ();
-        Vehicle vehicle = new Vehicle ();
-        vehicle.setId (1);
-        vehicle.setVehicleName ("Maruti");
-        user.getCollectionOfVehicle ().add (vehicle);
+        User user = new User();
+        Vehicle vehicle = new Vehicle();
+        vehicle.setId(1);
+        vehicle.setVehicleName("Maruti");
+        user.getCollectionOfVehicle().add(vehicle);
         return user;
     }
 
     @GetMapping("/validate")
     public Object bootstrapValidateCheck() {
-        return new UserDTO ();
+        return UserDTO.builder().get();
     }
 
     @PostMapping(value = "/dto", consumes = APPLICATION_JSON_VALUE)

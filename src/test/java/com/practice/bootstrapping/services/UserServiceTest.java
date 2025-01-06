@@ -63,7 +63,7 @@ class UserServiceTest {
 
 		// providing knowledge
 		when(userRepository.findAll()).thenReturn(users);
-		List<User> findAllUser = service.findAll();
+		List<User> findAllUser = service.retrieveAllUsers();
 		assertThat(findAllUser.size()).isGreaterThan(0);
 	}
 

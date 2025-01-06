@@ -1,13 +1,15 @@
 package com.practice.bootstrapping.services;
 
+import com.practice.bootstrapping.dto.UserDTO;
+import com.practice.bootstrapping.entity.User;
+import com.practice.bootstrapping.exception.UserNotFoundException;
+import com.practice.bootstrapping.repositories.UserRepository;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.practice.bootstrapping.entity.User;
-import com.practice.bootstrapping.repositories.UserRepository;
+import static com.practice.bootstrapping.helper.UserMapper.mapUserEntityToUserDTO;
 
 @Service
 public class UserService {
@@ -18,7 +20,19 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> findAll() {
+    private void validate(Optional<User> currentUser) {
+        currentUser.stream().findFirst().orElseThrow(() -> new UserNotFoundException("user not found"));
+    }
+
+    public UserDTO retrieveValidUserBy(int id) {
+
+        Optional<User> requestedUser = userRepository.findById(id);
+        validate(requestedUser);
+        return mapUserEntityToUserDTO(requestedUser.get());
+
+    }
+
+    public List<User> retrieveAllUsers() {
         return userRepository.findAll();
     }
 
@@ -26,48 +40,5 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<User> saveAll(List<User> entities) {
-        return userRepository.saveAll(entities);
-    }
-
-    public Optional<User> findById(Integer id) {
-        return userRepository.findById(id);
-    }
-
-    public boolean existsById(Integer id) {
-        return userRepository.existsById(id);
-    }
-
-    public List<User> findAllById(List<Integer> ids) {
-        return userRepository.findAllById(ids);
-    }
-
-    public long count() {
-        return userRepository.count();
-    }
-
-    public void deleteById(Integer id) {
-        userRepository.deleteById(id);
-    }
-
-    public void delete(User entity) {
-        userRepository.delete(entity);
-    }
-
-    public void deleteAllById(List<Integer> ids) {
-        userRepository.deleteAllById(ids);
-    }
-
-    public void deleteAll(List<User> entities) {
-        userRepository.deleteAll(entities);
-    }
-
-    public void deleteAll() {
-        userRepository.deleteAll();
-    }
-
-    public User findOne() {
-        return new User();
-    }
 
 }

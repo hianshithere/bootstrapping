@@ -34,7 +34,7 @@ public class UserControllerTest {
     @Test
     public void get_api() throws Exception {
         List<User> usersList = new ArrayList<>();
-        when(userService.findAll()).thenReturn(usersList);
+        when(userService.retrieveAllUsers()).thenReturn(usersList);
 
         ResultActions resultActions = mockMvc
                 .perform(MockMvcRequestBuilders
