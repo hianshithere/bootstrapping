@@ -30,7 +30,6 @@ public class BulkVehicleController {
 	public ResponseEntity<BootstrapResponse> bulkUpdateVehicleTable(@RequestBody List<BulkModel> bulkModelList) {
 		ResponseEntity<BootstrapResponse> entity = new ResponseEntity<BootstrapResponse>(
 				new BootstrapResponse(null, "Total Data Size :: " + bulkModelList.size()), HttpStatus.OK);
-
 		services.bulkUpdateDataInVehicleTable(bulkModelList);
 		return entity;
 	}

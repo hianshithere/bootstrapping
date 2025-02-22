@@ -8,13 +8,14 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
 
-@Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE, LOCAL_VARIABLE })
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE, LOCAL_VARIABLE})
 @Retention(value = RetentionPolicy.RUNTIME)
-@Constraint (validatedBy = BootstrapValidateImpl.class)
+@Constraint(validatedBy = BootstrapValidateImpl.class)
 @interface BootstrapValidate {
 
     String message() default "The value provided is null";
-    Class<?>[] groups() default { };
-    Class<? extends Payload>[] payload() default { };
 
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 }

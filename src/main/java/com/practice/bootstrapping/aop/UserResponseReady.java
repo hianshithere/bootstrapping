@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Component
-@Target(value = { ElementType.METHOD, ElementType.TYPE })
+@Target(value = {ElementType.METHOD, ElementType.TYPE})
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface UserResponseReady	 {
+public @interface UserResponseReady {
 }

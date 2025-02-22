@@ -21,7 +21,9 @@ public class UserService {
     }
 
     private void validate(Optional<User> currentUser) {
-        currentUser.stream().findFirst().orElseThrow(() -> new UserNotFoundException("user not found"));
+        currentUser.stream()
+                .findFirst()
+                .orElseThrow(() -> new UserNotFoundException("user not found"));
     }
 
     public UserDTO retrieveValidUserBy(int id) {

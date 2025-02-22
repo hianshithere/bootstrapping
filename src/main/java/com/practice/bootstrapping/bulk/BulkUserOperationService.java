@@ -10,23 +10,24 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-@SuppressWarnings({ "unused", "rawtypes" })
+@SuppressWarnings({"unused", "rawtypes"})
 public class BulkUserOperationService {
 
-	private  final UserRepository userRepository;
-	public BulkUserOperationService(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+    private final UserRepository userRepository;
 
-	public Iterable bulkUserProcessing(MultipartFile file) {
-		try {
-			List<User> excelToUsers = ExcelHelper.excelToUsers(file.getInputStream());
-			
-			return userRepository.saveAll(excelToUsers);
-			
-		} catch (IOException e) {
-			throw new RuntimeException("File is not readable!");
-		}
-	}
+    public BulkUserOperationService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public Iterable bulkUserProcessing(MultipartFile file) {
+        try {
+            List<User> excelToUsers = ExcelHelper.excelToUsers(file.getInputStream());
+
+            return userRepository.saveAll(excelToUsers);
+
+        } catch (IOException e) {
+            throw new RuntimeException("File is not readable!");
+        }
+    }
 
 }
