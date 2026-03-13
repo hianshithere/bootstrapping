@@ -1,6 +1,7 @@
 package com.practice.bootstrapping.configurations.swagger;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -18,7 +19,7 @@ public class SwaggerUiWebMvcConfigurer implements WebMvcConfigurer {
   }
 
   @Override
-  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+  public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
     String baseUrl = StringUtils.trimTrailingCharacter(this.baseUrl, '/');
     registry.
         addResourceHandler(baseUrl + "/swagger-ui/**")

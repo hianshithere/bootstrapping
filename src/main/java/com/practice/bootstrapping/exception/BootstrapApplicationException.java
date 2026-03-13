@@ -1,6 +1,8 @@
 package com.practice.bootstrapping.exception;
 
-import com.practice.bootstrapping.wrapper.BootstrapResponse;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,8 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.Map;
-import java.util.TreeMap;
+import com.practice.bootstrapping.wrapper.BootstrapResponse;
 
 @RestControllerAdvice
 public class BootstrapApplicationException extends ResponseEntityExceptionHandler {

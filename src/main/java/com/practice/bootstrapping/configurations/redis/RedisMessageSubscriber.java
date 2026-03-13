@@ -1,11 +1,11 @@
 package com.practice.bootstrapping.configurations.redis;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class RedisMessageSubscriber implements MessageListener {

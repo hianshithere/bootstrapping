@@ -1,6 +1,7 @@
 package com.practice.bootstrapping.dto;
 
 import com.practice.bootstrapping.aop.BootstrapValidate;
+
 import lombok.Data;
 
 @Data

@@ -21,8 +21,8 @@ public class UserResponseReadyAspect {
         Object responseOnMethodSignatureChange = null;
 
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        Class returnType = methodSignature.getReturnType();
-        Class bootstrappingResponse = BootstrapResponse.class;
+        Class<?> returnType = methodSignature.getReturnType();
+        Class<?> bootstrappingResponse = BootstrapResponse.class;
 
         if (returnType.equals(bootstrappingResponse)) {
             log.warn("A Bootstrap Response");

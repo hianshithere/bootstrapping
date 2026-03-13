@@ -1,65 +1,42 @@
 package com.practice.bootstrapping.data_setup;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.practice.bootstrapping.bulk.model.BulkModel;
-import com.practice.bootstrapping.entity.Vehicle;
-import com.practice.bootstrapping.repositories.VehicleRepository;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Configuration;
 
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.fasterxml.jackson.databind.type.TypeFactory.defaultInstance;
-
-@Configuration
+/**
+ * Initializes vehicle data after the application is fully ready.
+ * Delegates to VehicleDataLoaderService to avoid code duplication.
+ * Runs asynchronously to avoid blocking the web server during startup.
+ */
+@Component
 @Slf4j
-public class DataSetupRunner implements CommandLineRunner {
+public class DataSetupRunner {
 
-    VehicleRepository vehicleRepository;
+    private static final String VEHICLES_JSON_PATH = "src/main/resources/vehicles.json";
 
-    public DataSetupRunner(VehicleRepository vehicleRepository) {
-        this.vehicleRepository = vehicleRepository;
+    private final VehicleDataLoaderService vehicleDataLoaderService;
+
+    public DataSetupRunner(VehicleDataLoaderService vehicleDataLoaderService) {
+        this.vehicleDataLoaderService = vehicleDataLoaderService;
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        if (vehicleRepository.count() > 0) return;
-        String readString = "";
+    /**
+     * Triggered after the application is fully started.
+     * Loads initial vehicle data asynchronously in a separate thread.
+     */
+    @EventListener(ApplicationReadyEvent.class)
+    @Async
+    public void initializeVehicleData(ApplicationReadyEvent event) {
+        log.info("Starting vehicle data initialization (async).");
         try {
-            readString = Files.readString(Path.of("src/main/resources/vehicles.json"));
-            if (readString.isBlank()) throw new NoSuchFileException("vehciles.json");
-            dataloader(readString);
+            vehicleDataLoaderService.loadVehiclesData(VEHICLES_JSON_PATH);
+            log.info("Vehicle data initialization completed successfully.");
         } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        log.info(String.valueOf(readString.length()));
-    }
-
-    private void dataloader(String readString) {
-
-        CollectionType typeReference = defaultInstance()
-                .constructCollectionType(List.class, BulkModel.class);
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            List<BulkModel> bulkModelList = mapper.readValue(readString, typeReference);
-            List<Vehicle> vehicles = bulkModelList.stream()
-                    .map(model -> {
-                        return new Vehicle(model.getMakeName(), "THIS IS " + model.getMakeName());
-                    })
-                    .collect(Collectors.toList());
-
-            vehicleRepository.saveAll(vehicles);
-            log.info(String.valueOf(vehicles.size()));
-        } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("Error during vehicle data initialization: {}", e.getMessage(), e);
         }
     }
 }
