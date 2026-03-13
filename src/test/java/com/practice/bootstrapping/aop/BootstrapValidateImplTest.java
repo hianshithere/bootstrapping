@@ -1,10 +1,14 @@
 package com.practice.bootstrapping.aop;
 
-import com.google.gson.Gson;
-import com.practice.bootstrapping.configurations.properties.ApplicationMetadata;
-import com.practice.bootstrapping.configurations.properties.BootstrapApplicationConfiguration;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.MockitoAnnotations.initMocks;
+
+import javax.validation.ConstraintValidatorContext;
+
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,13 +16,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-import javax.validation.ConstraintValidatorContext;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import com.google.gson.Gson;
+import com.practice.bootstrapping.configurations.properties.ApplicationMetadata;
+import com.practice.bootstrapping.configurations.properties.BootstrapApplicationConfiguration;
 
 @ExtendWith(MockitoExtension.class)
 @EnableConfigurationProperties(BootstrapApplicationConfiguration.class)

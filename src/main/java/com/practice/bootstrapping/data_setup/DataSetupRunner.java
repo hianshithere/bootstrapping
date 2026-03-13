@@ -1,22 +1,42 @@
 package com.practice.bootstrapping.data_setup;
 
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Configuration;
 
+/**
+ * Initializes vehicle data after the application is fully ready.
+ * Delegates to VehicleDataLoaderService to avoid code duplication.
+ * Runs asynchronously to avoid blocking the web server during startup.
+ */
+@Component
 @Slf4j
-@Configuration
-public class DataSetupRunner implements CommandLineRunner {
+public class DataSetupRunner {
 
-    private final VehicleDataLoaderService dataLoaderService;
+    private static final String VEHICLES_JSON_PATH = "src/main/resources/vehicles.json";
 
-    public DataSetupRunner(VehicleDataLoaderService dataLoaderService) {
-        this.dataLoaderService = dataLoaderService;
+    private final VehicleDataLoaderService vehicleDataLoaderService;
+
+    public DataSetupRunner(VehicleDataLoaderService vehicleDataLoaderService) {
+        this.vehicleDataLoaderService = vehicleDataLoaderService;
     }
 
-    @Override
-    public void run(String... args) {
-        dataLoaderService.loadVehiclesData("src/main/resources/vehicles.json");
+    /**
+     * Triggered after the application is fully started.
+     * Loads initial vehicle data asynchronously in a separate thread.
+     */
+    @EventListener(ApplicationReadyEvent.class)
+    @Async
+    public void initializeVehicleData(ApplicationReadyEvent event) {
+        log.info("Starting vehicle data initialization (async).");
+        try {
+            vehicleDataLoaderService.loadVehiclesData(VEHICLES_JSON_PATH);
+            log.info("Vehicle data initialization completed successfully.");
+        } catch (Exception e) {
+            log.error("Error during vehicle data initialization: {}", e.getMessage(), e);
+        }
     }
 }
-hianshithere/bootstrapping/src/main/java/com/practice/bootstrapping/data_setup/DataSetupRunner.java
