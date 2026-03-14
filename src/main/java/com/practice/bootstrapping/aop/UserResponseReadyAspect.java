@@ -7,87 +7,43 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import java.util.Objects;
 
 @Component
 @Aspect
 @Slf4j
 public class UserResponseReadyAspect {
-
-    @Around(value = "@within(com.practice.bootstrapping.aop.UserResponseReady) || "
-            + "@annotation(com.practice.bootstrapping.aop.UserResponseReady)")
-    public Object before(ProceedingJoinPoint joinPoint) throws Throwable {
-
-        Object returnValue = joinPoint.proceed();
-        Object responseOnMethodSignatureChange = null;
+    @Around("@within(com.practice.bootstrapping.aop.UserResponseReady) || @annotation(com.practice.bootstrapping.aop.UserResponseReady)")
+    public Object aroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
+        Objects.requireNonNull(joinPoint, "joinPoint must not be null");
 
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Class<?> returnType = methodSignature.getReturnType();
-        Class<?> bootstrappingResponse = BootstrapResponse.class;
 
-        if (returnType.equals(bootstrappingResponse)) {
-            log.warn("A Bootstrap Response");
-            responseOnMethodSignatureChange = returnValue;
-        } else {
-            log.warn("Not a Bootstrap Response");
+        Object returnValue = joinPoint.proceed();
 
-            BootstrapResponse response = new BootstrapResponse();
-            response.setResult(returnValue);
-
-            log.info(String.valueOf(returnValue));
-
-            response.setMetadata(methodSignature.getName());
-            responseOnMethodSignatureChange = response;
-            joinPoint.proceed();
+        if (returnValue instanceof BootstrapResponse) {
+            log.debug("Method {} returned a BootstrapResponse instance", methodSignature.getName());
+            return returnValue;
         }
-        /*
-                if (joinPoint.getSignature () instanceof BootstrapResponse) {
-                    System.out.println ("Class::");
-                }
-                System.out.println ("***********************");
-                System.out.println ("I am in annotated method::" + pjp.getSignature ());
-                System.out.println ("***********************");
-        */
 
-        return responseOnMethodSignatureChange;
+        if (BootstrapResponse.class.isAssignableFrom(returnType)) {
+            log.debug("Declared return type of {} is BootstrapResponse", methodSignature.getName());
+            return returnValue;
+        }
+
+        BootstrapResponse response = new BootstrapResponse();
+        response.setResult(returnValue);
+        response.setMetadata(methodSignature.getName());
+
+        log.info("Wrapped return value of method {} into BootstrapResponse", methodSignature.getName());
+
+        return response;
     }
 
-    // After each method return
-
-//    @Around("execution(* com.practice.bootstrapping.controllers.UserController.*(..))")
-//    public Object afterReturning(ProceedingJoinPoint joinPoint) throws Throwable {
-//
-//        Object returnValue = joinPoint.proceed ();
-//        Object reponseOnMethodSignatureChange = null;
-//
-//        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature ();
-//        Class returnType = methodSignature.getReturnType ();
-//        Class bootstrappingResponse = BootstrapResponse.class;
-////        BootstrapResponse response = null;
-//
-//        System.out.println (returnValue);
-//
-//        if (returnType.equals (bootstrappingResponse)) {
-//            System.out.println ("BootstrapResponse.class");
-////
-////			response = (BootstrapResponse) returnValue;
-////			response.setMetadata("AM HERE");
-//            reponseOnMethodSignatureChange = returnValue;
-//        } else {
-//            System.out.println ("!BootstrapResponse.class");
-//
-//            BootstrapResponse response = new BootstrapResponse ();
-//            response.setResult (returnValue);
-//            response.setMetadata ("AM AOP");
-//
-//            reponseOnMethodSignatureChange = response;
-//            joinPoint.proceed ();
-//        }
-//
-//        String descriptionAboutAnshit = "Anshit is a good typer";
-//
-//        String name = "Anshit";
-//        return reponseOnMethodSignatureChange;
-//
-//    }
+    // Compatibility wrapper for callers/tests that expect a `before` method.
+    public Object before(ProceedingJoinPoint joinPoint) throws Throwable {
+        return aroundAdvice(joinPoint);
+    }
 
 }

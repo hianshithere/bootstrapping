@@ -1,10 +1,8 @@
 package com.practice.bootstrapping.aop;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import javax.validation.ConstraintValidatorContext;
 
@@ -25,39 +23,45 @@ import com.practice.bootstrapping.configurations.properties.BootstrapApplication
 class BootstrapValidateImplTest {
 
     @Mock
-    ConstraintValidatorContext validatorContext;
-    @Mock
-    Gson gson;
-    @Mock
-    BootstrapApplicationConfiguration configuration;
-    @InjectMocks
-    BootstrapValidateImpl bootstrapValidate;
+    private ConstraintValidatorContext validatorContext;
 
+    @Mock
+    private Gson gson;
+
+    @Mock
+    private BootstrapApplicationConfiguration configuration;
+
+    @InjectMocks
+    private BootstrapValidateImpl bootstrapValidate;
 
     @BeforeEach
     void setup() {
-        initMocks(this);
         lenient().when(gson.toJson(any())).thenReturn("it is mocked");
-        BootstrapApplicationConfiguration applicationConfiguration = new BootstrapApplicationConfiguration();
-        applicationConfiguration.setProperty("JSR");
-        applicationConfiguration.setAppMetadata(
-                ApplicationMetadata
-                        .builder()
-                        .appName("bootstrap")
-                        .version("1.1")
-                        .build());
-
         lenient().when(configuration.getProperty()).thenReturn("JSR");
     }
 
     @Test
-    void isValid() {
-        assertTrue(bootstrapValidate.isValid("some text", validatorContext));
+    void should_return_true_when_value_is_present() {
+        // Arrange
+        String value = "some text";
+
+        // Act
+        boolean result = bootstrapValidate.isValid(value, validatorContext);
+
+        // Assert
+        assertThat(result).isTrue();
     }
 
     @Test
-    void isInvalid() {
-        assertFalse(bootstrapValidate.isValid(null, validatorContext));
+    void should_return_false_when_value_is_null() {
+        // Arrange
+        String value = null;
+
+        // Act
+        boolean result = bootstrapValidate.isValid(value, validatorContext);
+
+        // Assert
+        assertThat(result).isFalse();
     }
 
 }
